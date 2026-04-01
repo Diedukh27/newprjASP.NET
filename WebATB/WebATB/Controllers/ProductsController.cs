@@ -7,9 +7,20 @@ namespace WebATB.Controllers;
 
 public class ProductsController(MyContextATB myContextATB) : Controller
 {
+
     public IActionResult Index()
     {
-        return View();
+        var products = myContextATB.Products.Select(p => new ProductViewModel
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Slug = p.Slug,
+            Price = p.Price.ToString(),
+            CategoryName = p.Category.Name,
+            Image = p.Image
+        }).ToList();
+
+        return View(products);
     }
 
     [HttpGet] // Це сторінка для відображення створення категорії
@@ -35,7 +46,7 @@ public class ProductsController(MyContextATB myContextATB) : Controller
             {
                 var dir = Directory.GetCurrentDirectory();
                 var wwwroot = "wwwroot";
-                fileName = Guid.NewGuid().ToString()+".jpg";
+                fileName = Guid.NewGuid().ToString() + ".jpg";
                 var savePath = Path.Combine(dir, wwwroot, "images", fileName);
                 using (var stream = new FileStream(savePath, FileMode.Create))
                 {
@@ -57,6 +68,6 @@ public class ProductsController(MyContextATB myContextATB) : Controller
             myContextATB.SaveChanges(); //Зберігаю зміни в БД - Викную SQL запит COMMIT
             return RedirectToAction(nameof(Index));
         }
-        return View(model); // Якщо модель не валідна, повертаємо її назад на форму для виправлення помилок
+        return View(model); // Якщо модель не валідна,
     }
 }
