@@ -7,6 +7,7 @@ public class RegisterViewModel
     [Display(Name = "Прізвище")]
     [Required(ErrorMessage = "Вкажіть Прізвище")]
     public string LastName { get; set; } = null!;
+
     [Display(Name = "Ім'я")]
     [Required(ErrorMessage = "Вкажіть Ім'я")]
     public string FirstName { get; set; } = null!;
